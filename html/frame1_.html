@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>用户查询</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/style.css"/>
+    <style>
+        .main {
+          width: 100%;
+          height: 100%;
+          position: absolute;
+          background-color: #f2f2f2;
+        }
+        ul li {
+          height: 35px;
+          width:33.3%;
+          padding-top: 36px;
+          text-align: center;
+          font-size: 16px;
+          font-weight: bolder;
+          display: inline-block;
+          background: url() no-repeat center 2px;
+          background-size: 36px;
+        }
+        ul li:nth-child(1){ background-image: url(../image/bottombtn0101.png);}
+        ul li:nth-child(2){ background-image: url(../image/bottombtn0201.png); }
+        ul li:nth-child(3){ background-image: url(../image/bottombtn0301.png); }
+        .flex-con{
+          overflow: auto
+        }
+    </style>
+</head>
+<body>
+    <div class = "main">
+      <ul class="flex-wrap">
+        <li  class="flex-con">余额查询</li>
+        <li  class="flex-con">缴费记录</li>
+        <li  class="flex-con">消费记录</li>
+      </ul>
+      <ul>
+        <li >历史账单</li>
+      </ul>
+    </div>
+</body>
+</html>

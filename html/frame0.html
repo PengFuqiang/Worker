@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>故障报修</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/style.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/aui.css"/>
+    <style>
+
+      .content {
+        position: relative;
+        width:100%;
+        height: auto;
+        white-space : nowrap;
+
+      }
+      .function{
+        width:33%;
+        height:68px;
+        font-size:16px;
+        text-align:center;
+        display:inline-block;
+      }
+      .icon{
+        width:36px;
+        height:36px;
+        margin:10px 0 0 0px;
+      }
+
+    </style>
+</head>
+<body>
+  <div class="content">
+    <div class="function" tapmode onclick="fnOpenRepairWin()">
+      <image class="icon" src="../image/icon_1.ico"></image>
+      <div class="icon_name">故障报修</div>
+    </div>
+
+    <div class="function" tapmode onclick="fnOpenRoom_StatusWin()">
+      <image class="icon" src="../image/icon_2.ico"></image>
+      <div class="icon_name">房间状态</div>
+    </div>
+
+    <div class="function" tapmode onclick="fnOpenUpdate_HisWin()">
+      <image class="icon" src="../image/icon_3.ico"></image>
+      <div class="icon_name">更新记录</div>
+    </div>
+
+  </div>
+
+</body>
+<script type="text/javascript" src="../script/api.js" ></script>
+<script type="text/javascript">
+
+function fnOpenRepairWin() {
+  api.openWin({
+      name: 'repair_records',
+      url: './repair_records.html',
+
+  });
+
+}
+
+function fnOpenRoom_StatusWin() {
+  api.openWin({
+    name: 'room_status',
+    url: './room_status1.html',
+  });
+}
+
+function fnOpenUpdate_HisWin() {
+  api.openWin({
+    name: 'update_history',
+    url: './update_history.html',
+  });
+}
+
+</script>
+</html>

@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>我的信息</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/style.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/aui.css"/>
+    <style>
+
+    </style>
+</head>
+<body>
+  <div class="aui-content">
+    <ul class="aui-list-view">
+      <li class="aui-list-view-cell">
+        <i class="aui-iconfont aui-icon-people aui-text-success"></i><span id='username'></span>
+        <span class="aui-pull-right aui-btn aui-btn-danger" onclick="openWinUsr()">退出登录</span>
+      </li>
+    </ul>
+  </div>
+
+  <div class="aui-content">
+		<br/>
+			 <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;武汉鸿图节能技术有限公司是国内最早从事地面供暖系统、地（水）源热泵中央空调系统、绿色建筑、建筑节能、可再生能源等高科技节能产品的研发和应用的高新技术企业。</p>
+			 <br/>
+			 <p>地址：武汉经济技术开发区全力四路107号鸿图节能环保产业园</p>
+			 <p>客服电话：027-84221992</p>
+			 <p>公司网址：www.hongtupb.com.cn</p>
+			 <p>意见反馈：wan_cong@126.com</p>
+	</div>
+</body>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/APICloud-rest-SHA1.js"></script>
+<script type="text/javascript">
+	apiready = function(){
+		var header = $api.byId('aui-header');
+		$api.fixStatusBar(header);
+		setName();
+		api.addEventListener({name:'login'},function(ret,err){
+			if(ret){
+				var username = (ret.value).username;
+				$api.text($api.byId('username'), username);
+			}
+		});
+	}
+	function setName(){
+		var username = $api.getStorage('username');
+		$api.text($api.byId('username'), username);
+	}
+
+	function openWinUsr(){
+		api.openWin({
+			name: "user",
+			url: "login.html"
+		})
+	}
+</script>
+</html>

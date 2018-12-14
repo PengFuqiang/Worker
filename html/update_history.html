@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>更新记录</title>
+    <link rel="stylesheet" type="text/css" href="../css/aui.css"/>
+</head>
+<body>
+   <header class="aui-bar aui-bar-nav aui-bar-warning" id="aui-header">
+       <a class='aui-btn aui-btn-warning aui-pull-left' tapmode='' onclick='api.closeWin()'>
+         <span class='aui-iconfont aui-icon-left'></span>
+       </a>
+       <div class="aui-title" id="header-title">更新记录</div>
+       <a class='aui-btn aui-btn-warning aui-pull-right' tapmode='' onclick='getList()'>
+         <span class='aui-iconfont aui-icon-refresh'></span>
+       </a>
+   </header>
+
+   <div style="overflow:auto">
+     <table border = "1">
+       <thead>
+         <tr>
+           <th>1小时后</th>
+           <th>2小时后</th>
+           <th>3小时后</th>
+           <th>4小时后</th>
+         </tr>
+       </thead>
+       <tbody align = "center" id = "preUpdate">
+       </tbody>
+     </table>
+     <table border = "1">
+       <thead>
+         <tr>
+           <th>1栋低区</th>
+           <th>1栋高区</th>
+           <th>2栋低区</th>
+           <th>2栋高区</th>
+           <th>3栋低区</th>
+           <th>3栋高区</th>
+           <th>4栋低区</th>
+           <th>4栋高区</th>
+           <th>5栋低区</th>
+           <th>5栋高区</th>
+           <th>其他</th>
+           <th>总计</th>
+           <th>时间戳</th>
+         </tr>
+       </thead>
+       <tbody align="center" id = "updateList">
+       </tbody>
+     </table>
+	</div>
+</body>
+<script type="text/javascript" src="../script/api.js" ></script>
+<script type="text/javascript">
+	apiready = function(){
+		var header = $api.byId('aui-header');
+		$api.fixStatusBar(header);
+		getList();
+	}
+
+  function getList(){
+    api.ajax({
+        url: 'http://120.25.126.116:8888/zm/html/base/worker_app_update_his.php',
+        method: 'get',
+        dataType: 'json',
+        data: {
+            d1: 'D1',
+            g1: 'G1',
+            d2: 'D2',
+            g2: 'G2',
+            d3: 'D3',
+            g3: 'G3',
+            d4: 'D4',
+            g4: 'G4',
+            d5: 'D5',
+            g5: 'G5',
+            wz: 'WZ',
+            total: 'total',
+            timestamp: 'timestamp'
+        }
+    },function(ret, err){
+        if (ret) {
+            var strtime = ret[0].timestamp;
+            var currentTotal = ret[0].total;
+            timeToTimestamp(strtime,currentTotal);
+
+            var records_length = getJsonObjLength(ret);
+            var d1_list = new Array();
+            var g1_list = new Array();
+            var d2_list = new Array();
+            var g2_list = new Array();
+            var d3_list = new Array();
+            var g3_list = new Array();
+            var d4_list = new Array();
+            var g4_list = new Array();
+            var d5_list = new Array();
+            var g5_list = new Array();
+            var wz_list = new Array();
+            var total_list = new Array();
+            var timestamp_list = new Array();
+
+            var myHtml = '';
+            for (var i = 0; i < records_length; i++) {
+              d1_list.push(ret[i].D1);
+              g1_list.push(ret[i].G1);
+              d2_list.push(ret[i].D2);
+              g2_list.push(ret[i].G2);
+              d3_list.push(ret[i].D3);
+              g3_list.push(ret[i].G3);
+              d4_list.push(ret[i].D4);
+              g4_list.push(ret[i].G4);
+              d5_list.push(ret[i].D5);
+              g5_list.push(ret[i].G5);
+              wz_list.push(ret[i].WZ);
+              total_list.push(ret[i].total);
+              timestamp_list.push(ret[i].timestamp);
+
+              myHtml += "<tr>"
+                + "<td>"
+                + d1_list[i]
+                + "</td>"
+                + "<td>"
+                + g1_list[i]
+                + "</td>"
+                + "<td>"
+                + d2_list[i]
+                + "</td>"
+                + "<td>"
+                + g2_list[i]
+                + "</td>"
+                + "<td>"
+                + d3_list[i]
+                + "</td>"
+                + "<td>"
+                + g3_list[i]
+                + "</td>"
+                + "<td>"
+                + d4_list[i]
+                + "</td>"
+                + "<td>"
+                + g4_list[i]
+                + "</td>"
+                + "<td>"
+                + d5_list[i]
+                + "</td>"
+                + "<td>"
+                + g5_list[i]
+                + "</td>"
+                + "<td>"
+                + wz_list[i]
+                + "</td>"
+                + "<td>"
+                + total_list[i]
+                + "</td>"
+                + "<td>"
+                + timestamp_list[i]
+                + "</td>"
+                + "</tr>"
+
+            }
+
+            var el = $api.byId('updateList');
+  					$api.html(el, myHtml);
+        } else {
+            alert( '获取更新记录失败。' );
+          }
+      });
+	  }
+
+    function timeToTimestamp(time,currentTotal) {
+      var date = new Date(time.replace(/-/g, '/'));
+      var format_time = new Date(date);
+      var hour = parseInt(format_time.getHours());
+      var preData = getData(hour);
+      var num = currentTotal/preData;
+      var preData1 = num * getData(hour+1);
+      var preData2 = num * getData(hour+2);
+      var preData3 = num * getData(hour+3);
+      var preData4 = num * getData(hour+4);
+      preData1 = Math.round(preData1);
+      preData2 = Math.round(preData2);
+      preData3 = Math.round(preData3);
+      preData4 = Math.round(preData4);
+      var preHtml = '';
+      preHtml += "<tr>"
+        + "<td>"
+        + preData1
+        + "</td>"
+        + "<td>"
+        + preData2
+        + "</td>"
+        + "<td>"
+        + preData3
+        + "</td>"
+        + "<td>"
+        + preData4
+        + "</td>"
+        + "</tr>"
+      var el = $api.byId('preUpdate');
+      $api.html(el, preHtml);
+
+    }
+
+    function getData(hour) {
+      if (hour > 23) {
+        hour = hour - 24;
+      }
+      hourdata1 = Math.pow(hour,4);
+      hourdata2 = Math.pow(hour,3);
+      hourdata3 = Math.pow(hour,2);
+      hourdata4 = hour;
+      hourdata5 = 232.01;
+      hourdata = (-0.0064)*hourdata1 + 0.3058*hourdata2 + (-4.1017)*hourdata3
+      + 16.405*hourdata4 + hourdata5;
+      hourdata = Math.round(hourdata);
+      return hourdata;
+    }
+
+  function getJsonObjLength(jsonObj) {
+         var Length = 0;
+          for (var item in jsonObj) {
+              Length++;
+          }
+          return Length;
+  }
+</script>
+</html>
