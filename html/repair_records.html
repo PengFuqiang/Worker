@@ -48,6 +48,7 @@
         if (ret) {
             var records_length = getJsonObjLength(ret);
 
+            var id_list = new Array();
             var phone_list = new Array();
             var room_id_list = new Array();
             var problem_class_list = new Array();
@@ -55,13 +56,13 @@
 
             var myHtml = '';
             for (var i = 0; i < records_length; i++) {
+              id_list.push(ret[i].id);
               phone_list.push(ret[i].phone);
               room_id_list.push(ret[i].room_id);
               problem_class_list.push(ret[i].problem_class);
               repair_time_list.push(ret[i].repair_time);
 
-              myHtml += '<li data-index="' + i
-                + '"class="aui-list-view-cell aui-bg-default">'
+              myHtml += '<li class="aui-list-view-cell aui-bg-default">'
                 + "电话："
                 + '<span>'
                 + phone_list[i]
@@ -79,17 +80,18 @@
                 + repair_time_list[i]
                 + '</span>'
                 + '</br>'
-                + '<div class="aui-btn aui-btn-success " onclick="begin_repair(this)" >'
+                + '<div data-index="' + i
+                + '"class="aui-btn aui-btn-success " onclick="begin_repair(this)" >'
                 + "开始维修"
                 + '</div>'
-                + '<div class="aui-btn aui-btn-success aui-pull-right" onclick="finish_repair(this)" >'
+                + '<div data-index="' + i
+                + '"class="aui-btn aui-btn-success aui-pull-right" onclick="finish_repair(this)" >'
                 + "维修完成"
                 + '</div>'
                 + '</li>';
 
             }
-            $api.setStorage('phone_list', 'phone_list');
-            $api.setStorage('problem_class_list', 'problem_class_list');
+            $api.setStorage('id_list', id_list);
 
             var el = $api.byId('repairList');
   					$api.html(el, myHtml);
@@ -101,10 +103,10 @@
 
   function begin_repair(obj) {
     var index = $api.attr(obj, 'data-index');
-    var phone_list = $api.getStorage('phone_list');
-    var problem_class_list = $api.getStorage('problem_class_list');
+    var id_list = $api.getStorage('id_list');
     var worker = $api.getStorage('username');
 
+    var id = id_list[index];
     var phone = phone_list[index];
     var problem_class = problem_class_list[index];
     api.ajax({
@@ -112,28 +114,27 @@
         method: 'post',
         data: {
             values: {
-                phone: 'phone',
-                problem_class: 'problem_class',
-                worker: 'username'
+                id: id,
+                worker: worker
             }
         }
     },function(ret, err){
         if (ret) {
-            // alert( JSON.stringify( ret ) );
+            api.alert({ msg: '开始维修' });
         } else {
-            // alert( JSON.stringify( err ) );
+            api.alert({ msg: '提交失败' });
         }
     });
 
 
   }
 
-  function finish_repair() {
+  function finish_repair(obj) {
     var index = $api.attr(obj, 'data-index');
-    var phone_list = $api.getStorage('phone_list');
-    var problem_class_list = $api.getStorage('problem_class_list');
+    var id_list = $api.getStorage('id_list');
     var worker = $api.getStorage('username');
 
+    var id = id_list[index];
     var phone = phone_list[index];
     var problem_class = problem_class_list[index];
     api.ajax({
@@ -141,16 +142,15 @@
         method: 'post',
         data: {
             values: {
-                phone: 'phone',
-                problem_class: 'problem_class',
-                worker: 'worker'
+                id: id,
+                worker: worker
             }
         }
     },function(ret, err){
         if (ret) {
-            // alert( JSON.stringify( ret ) );
+            api.alert({ msg: '完成维修' });
         } else {
-            // alert( JSON.stringify( err ) );
+            api.alert({ msg: '提交失败' });
         }
     });
 

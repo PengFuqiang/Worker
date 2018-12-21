@@ -6,6 +6,18 @@
     <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
     <title>更新记录</title>
     <link rel="stylesheet" type="text/css" href="../css/aui.css"/>
+    <style>
+    table tbody tr:nth-child(odd) {
+      background: #DFC;
+    }
+    table tbody tr:nth-child(even) {
+      background: #CEA;
+    }
+    .table1 {
+      width: 100%;
+      background-color: #d3d3d3;
+    }
+    </style>
 </head>
 <body>
    <header class="aui-bar aui-bar-nav aui-bar-warning" id="aui-header">
@@ -19,7 +31,7 @@
    </header>
 
    <div style="overflow:auto">
-     <table border = "1">
+     <table class="table1" border="3" cellspacing = "0" cellpadding = "5">
        <thead>
          <tr>
            <th>1小时后</th>
@@ -31,7 +43,7 @@
        <tbody align = "center" id = "preUpdate">
        </tbody>
      </table>
-     <table border = "1">
+     <table border = "1" cellspacing = "0">
        <thead>
          <tr>
            <th>1栋低区</th>

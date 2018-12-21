@@ -6,6 +6,19 @@
     <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
     <title>房间状态</title>
     <link rel="stylesheet" type="text/css" href="../css/aui.css"/>
+    <style>
+      table {
+        position: absolute;
+        top: 464px;
+        background-color: #FFF;
+      }
+      table tbody tr:nth-child(odd) {
+        background: #DFC;
+      }
+      table tbody tr:nth-child(even) {
+        background: #CEA;
+      }
+    </style>
 </head>
 <body>
    <header class="aui-bar aui-bar-nav aui-bar-warning" id="aui-header">
@@ -19,7 +32,7 @@
    </header>
 
    <div class="aui-content">
-      <table border = "1">
+      <table border="1" cellspacing="0">
         <thead>
           <tr>
             <th>开机室温</th>
@@ -101,9 +114,9 @@
             var el = $api.byId('statusList');
   					$api.html(el, myHtml);
 
-            var data_x = {};
-            var data1 = {};
-            var data2 = {};
+            var data_x = new Array();
+            var data1 = new Array();
+            var data2 = new Array();
             if (status_length < 12) {
               for (var i = status_length-1; i >= 0; i--) {
                 var hour_minute = changeTime(timestamp_list[i]);
@@ -124,8 +137,8 @@
                 rect: {
                     x: 0,
                     y: 64,
-                    w: 320,
-                    h: 300
+                    w: api.winWidth,
+                    h: 400
                 },
                 xAxis: {
                     indexs: data_x,
@@ -133,9 +146,8 @@
                 },
                 yAxis: {
                     max: 22,
-                    min: 8,
-                    step: 1,
-                    base: 8
+                    min: -2,
+                    step: 1
                 },
                 datas: [
                     data1,
@@ -145,12 +157,12 @@
                     xAxis: {
                         bg: '#b2dfee',
                         markColor: '#888',
-                        markSize: 12
+                        markSize: 14
                     },
                     yAxis: {
                         bg: '#b2dfee',
                         markColor: '#888',
-                        markSize: 12
+                        markSize: 14
                     },
                     coordinate: {
                         bg: '#fcfcfc',
