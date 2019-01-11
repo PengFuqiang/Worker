@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+   <html>
+   <head>
+       <meta charset="UTF-8">
+       <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+       <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+       <title>房间状态</title>
+       <link rel="stylesheet" type="text/css" href="../css/aui.css"/>
+   </head>
+   <body>
+      <header class="aui-bar aui-bar-nav aui-bar-warning" id="aui-header">
+          <a class='aui-btn aui-btn-warning aui-pull-left' tapmode='' onclick='api.closeWin()'>
+            <span class='aui-iconfont aui-icon-left'></span>
+          </a>
+          <div class="aui-title" id="header-title">房间状态</div>
+          <a class='aui-btn aui-btn-warning aui-pull-right' tapmode='' onclick='getRoomStatus()'>
+            <span class='aui-iconfont aui-icon-refresh'></span>
+          </a>
+      </header>
+
+      <div style="overflow:auto" >
+         <table border = "1">
+           <thead>
+             <tr>
+               <th>开机室温</th>
+               <th>关机室温</th>
+               <th>开机面板</th>
+               <th>关机面板</th>
+               <th>最高温</th>
+               <th>时间戳</th>
+             </tr>
+           </thead>
+           <tbody align = "center" id = "statusList">
+           </tbody>
+         </table>
+   	</div>
+   </body>
+   <script type="text/javascript" src="../script/api.js" ></script>
+   <script type="text/javascript" src="../script/APICloud-rest-SHA1.js" ></script>
+   <script type="text/javascript">
+   	apiready = function(){
+   		var header = $api.byId('aui-header');
+   		$api.fixStatusBar(header);
+   		getRoomStatus();
+   	}
+
+     function getRoomStatus() {
+       api.showProgress();
+       api.ajax({
+           url: 'http://120.25.126.116:8888/zm/html/base/worker_app_room_status.php',
+           method: 'get',
+           dataType: 'json',
+           data: {
+               room_on_temp: 'room_on_temp',
+               room_off_temp: 'room_off_temp',
+               room_on_set: 'room_on_set',
+               room_off_set: 'room_off_set',
+               room_on_max: 'room_on_max',
+               timestamp: 'timestamp'
+           }
+       },function(ret, err){
+           if (ret) {
+               var status_length = getJsonObjLength(ret);
+               var on_temp_list = new Array();
+               var off_temp_list = new Array();
+               var on_set_list = new Array();
+               var off_set_list = new Array();
+               var on_max_list = new Array();
+               var timestamp_list = new Array();
+               var myHtml = '';
+               for (var i = 0; i < status_length; i++) {
+                 on_temp_list.push(ret[i].room_on_temp);
+                 off_temp_list.push(ret[i].room_off_temp);
+                 on_set_list.push(ret[i].room_on_set);
+                 off_set_list.push(ret[i].room_off_set);
+                 on_max_list.push(ret[i].room_on_max);
+                 timestamp_list.push(ret[i].timestamp);
+
+                 var on_temp_list_round = parseFloat(on_temp_list[i]).toFixed(1);
+                 var off_temp_list_round = parseFloat(off_temp_list[i]).toFixed(1);
+                 var on_set_list_round = parseFloat(on_set_list[i]).toFixed(1);
+                 var off_set_list_round = parseFloat(off_set_list[i]).toFixed(1);
+
+                 myHtml += "<tr>"
+                   + "<td>"
+                   + on_temp_list_round
+                   + "</td>"
+                   + "<td>"
+                   + off_temp_list_round
+                   + "</td>"
+                   + "<td>"
+                   + on_set_list_round
+                   + "</td>"
+                   + "<td>"
+                   + off_set_list_round
+                   + "</td>"
+                   + "<td>"
+                   + on_max_list[i]
+                   + "</td>"
+                   + "<td>"
+                   + timestamp_list[i]
+                   + "</td>"
+                   + "</tr>"
+               }
+               var el = $api.byId('statusList');
+     					$api.html(el, myHtml);
+           } else {
+               alert( JSON.stringify( err ) );
+           }
+       });
+       api.hideProgress();
+     }
+
+     function getJsonObjLength(jsonObj) {
+            var Length = 0;
+             for (var item in jsonObj) {
+                 Length++;
+             }
+             return Length;
+     }
+
+   </script>
+   </html>
